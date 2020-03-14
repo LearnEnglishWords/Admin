@@ -15,7 +15,7 @@
         <Col md={{ offset: 1 }}>
           <Button color="primary" on:click={() => editCategory(category.id)}> <i class="fas fa-pen"></i> </Button>
         </Col>
-        <Col md={{ offset: 1 }}>
+        <Col md={{ offset: 0.9 }}>
           <Button color="danger" on:click={() => deleteCategory(category.id)}> <i class="fas fa-trash"></i> </Button>
         </Col>
       </Row>

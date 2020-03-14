@@ -6,10 +6,10 @@
           <NavLink href="#">Collections</NavLink>
         </Col>
         <Col>
-          <NavLink href="#">Categories</NavLink>
+          <NavLink href="categories">Categories</NavLink>
         </Col>
         <Col>
-          <NavLink href="#">Words</NavLink>
+          <NavLink href="words">Words</NavLink>
         </Col>
       </Row>
     </Nav>

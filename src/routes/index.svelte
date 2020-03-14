@@ -7,7 +7,7 @@
 
 <ListGroup>
 	<ListGroupItem href="categories">Category list</ListGroupItem>
-	<ListGroupItem href="#">Word list</ListGroupItem>
+	<ListGroupItem href="words">Word list</ListGroupItem>
 </ListGroup>
 
 
