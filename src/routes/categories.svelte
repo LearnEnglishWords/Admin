@@ -12,6 +12,9 @@
         <Col >
           {category.name} 
         </Col>
+        <Col >
+          ({category.wordsCount}) 
+        </Col>
         <Col md={{ offset: 1 }}>
           <Button color="primary" on:click={() => editCategory(category.id)}> <i class="fas fa-pen"></i> </Button>
         </Col>
@@ -43,7 +46,7 @@
   let categoryList = [];
 
   function getCategories() {
-    axios.get(`${serverUrl}/category/list`)
+    axios.get(`${serverUrl}/category/list?withWordsCount=true`)
       .then(function (response) {
         categoryList = [...response.data.payload];
       })
