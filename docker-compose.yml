@@ -1,0 +1,9 @@
+version: '3'
+services:
+  lew-admin:
+    #image: applemann/lew-admin
+    build: .
+    ports:
+    - "3000:3000"
+
+
