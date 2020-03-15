@@ -3,27 +3,27 @@
 	<title>LearnEnglishWords Admin</title>
 </svelte:head>
 
-<Menu title="Words:"/>
+<Menu title="Word: {word.text}"/>
 
 
 <Form>
   <FormGroup>
-    <Label>Word:</Label> <Input bind:value={word.text} />
-    <Label>Pronunciation:</Label> <Input bind:value={word.pronunciation} />
+    <Label>Pronunciation:</Label> <Input bind:value={editWord.pronunciation} />
     <Label>Sense:</Label> 
-    <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+    <Input bind:value={editWord.sense} type="select" multiple>
       {#each word.sense as sense}
         <option>{sense}</option>
       {/each}
     </Input>
     <Label>Examples:</Label>
-    <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+      <Input bind:value={editWord.examples} type="select" multiple>
       {#each word.examples as example}
         <option>{example}</option>
       {/each}
     </Input>
   </FormGroup>
 </Form>
+<Button on:click={saveWord}> Save </Button>
 
 <script>
 	import { 
@@ -31,10 +31,23 @@
 		Label, Input, Button,
     Form, FormGroup, 
   } from 'sveltestrap';
+  import { goto } from '@sapper/app';
   import Menu from '../../components/Menu.svelte';
+  import axios from 'axios';
   import { serverUrl } from '../../config.js';
 
   export let word;
+  let editWord = {
+    id: word.id, 
+    text: word.text,
+    pronunciation: word.pronunciation,
+    state: "CORRECT"
+  };
+
+  function saveWord() {
+    axios.put(`${serverUrl}/word/`, editWord)
+    goto('/words');
+  }
 </script>
 
 

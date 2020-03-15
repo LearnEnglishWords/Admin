@@ -3,27 +3,26 @@
 	<title>LearnEnglishWords Admin</title>
 </svelte:head>
 
-<Menu title="Words:"/>
+<Menu title="Imported words:"/>
 
 <ListGroup>
   {#each wordList as word}
-    <ListGroupItem href="words/{word.text}"> 
-      <Row>
-        <Col >
-          {word.text} 
-        </Col>
-        {#if word.pronunciation === undefined}
-          <Col md={{ offset: 1 }}>
-            <Button color="warning" on:click={() => parseWord(word.id)}> Parse </Button>
+    {#if word.state !== "CORRECT"}
+      <ListGroupItem> 
+        <Row>
+          <Col>
+            <a href="words/{word.text}">
+              {word.text}
+            </a>
           </Col>
-        {/if}
-        <!--
-        <Col md={{ offset: 0.9 }}>
-          <Button color="danger" on:click={() => deleteWord(word.id)}> <i class="fas fa-trash"></i> </Button>
-        </Col>
-        -->
-      </Row>
-    </ListGroupItem>
+          {#if word.state === "IMPORT"}
+            <Col md={{ offset: 1 }}>
+              <Button color="warning" on:click={() => parseWord(word.text)}> Parse </Button>
+            </Col>
+          {/if}
+        </Row>
+      </ListGroupItem>
+    {/if}
   {/each}
 </ListGroup>
 
@@ -48,7 +47,11 @@
       })
   }
 
-  function parseWord() {
+  function parseWord(word) {
+    axios.get(`${serverUrl}/word/parse/${word}/`)
+    setTimeout(function(){ 
+      updateWords()
+    }, 500);
   }
 
   onMount(() => updateWords());
