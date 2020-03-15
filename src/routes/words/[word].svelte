@@ -28,9 +28,12 @@
     </Input>
   </FormGroup>
 </Form>
-<Button on:click={saveWord} color="danger"> Save </Button>
 
-<CategoryForm on:save={() => {setTimeout(() => { getAllCategories() }, 500)}} />
+<center>
+  <Button on:click={saveWord} color="danger"> Save </Button>
+  <Button color="warning" on:click={() => parseWord(word.text)}> Parse </Button>
+  <CategoryForm on:save={() => {setTimeout(() => { getAllCategories() }, 500)}} />
+</center>
 
 
 <script>
@@ -99,6 +102,13 @@
             return category.name;
           });
       })
+  }
+
+  function parseWord(word) {
+    axios.get(`${serverUrl}/word/parse/${word}/`)
+    setTimeout(function(){ 
+      updateWords()
+    }, 500);
   }
 
   onMount(() => {
