@@ -80,7 +80,7 @@
       axios.delete(`${serverUrl}/category/${category.id}/word/${editWord.id}/`)
     });
 
-    goto('/words');
+    window.history.back();
   }
 
   function getAllCategories() {

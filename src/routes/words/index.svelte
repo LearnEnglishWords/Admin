@@ -40,13 +40,6 @@
 
   let wordList = [];
 
-  async function updateWords() {
-    axios.get(`${serverUrl}/word/list`)
-      .then(function (response) {
-        wordList = [...response.data.payload];
-      })
-  }
-
   function parseWord(word) {
     axios.get(`${serverUrl}/word/parse/${word}/`)
     setTimeout(function(){ 
@@ -54,5 +47,12 @@
     }, 500);
   }
 
-  onMount(() => updateWords());
+  function getWords() {
+    axios.get(`${serverUrl}/word/list`)
+      .then(function (response) {
+        wordList = [...response.data.payload];
+      })
+  }
+
+  onMount(() => getWords());
 </script>

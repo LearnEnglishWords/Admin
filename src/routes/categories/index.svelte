@@ -7,17 +7,21 @@
 
 <ListGroup>
   {#each categoryList as category}
-    <ListGroupItem href="categories/#"> 
+    <ListGroupItem> 
       <Row>
-        <Col >
-          {category.name} 
+        <Col>
+          <a href="categories/{category.id}/">
+            {category.name} 
+          </a>
         </Col>
         <Col >
           ({category.wordsCount}) 
         </Col>
+        <!--
         <Col md={{ offset: 1 }}>
           <Button color="primary" on:click={() => editCategory(category.id)}> <i class="fas fa-pen"></i> </Button>
         </Col>
+        -->
         <Col md={{ offset: 0.9 }}>
           <Button color="danger" on:click={() => deleteCategory(category.id)}> <i class="fas fa-trash"></i> </Button>
         </Col>
@@ -39,9 +43,9 @@
   } from 'sveltestrap';
   import { onMount } from 'svelte';
   import axios from 'axios';
-  import Menu from '../components/Menu.svelte';
-  import CategoryForm from '../components/CategoryForm.svelte';
-  import { serverUrl, collectionId } from '../config.js';
+  import Menu from '../../components/Menu.svelte';
+  import CategoryForm from '../../components/CategoryForm.svelte';
+  import { serverUrl, collectionId } from '../../config.js';
 
   let categoryList = [];
 
