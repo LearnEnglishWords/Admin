@@ -50,13 +50,13 @@
   import { onMount } from 'svelte';
   import axios from 'axios';
   import Menu from '../components/Menu.svelte';
-  import { serverUrl } from '../config.js';
+  import { serverUrl, collectionId } from '../config.js';
 
 	let categoryList = [];
   let open = false;
   let categoryInput = "";
 
-  async function updateCategories() {
+  function updateCategories() {
     axios.get(`${serverUrl}/category/list`)
       .then(function (response) {
         categoryList = [...response.data.payload];
@@ -66,7 +66,7 @@
   function saveCategory() {
     axios.post(`${serverUrl}/category/`, {
       name: categoryInput,
-      collectionId: 2
+      collectionId: collectionId
     })
     categoryInput = "";
     setTimeout(function(){ 

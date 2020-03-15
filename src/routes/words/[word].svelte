@@ -5,7 +5,6 @@
 
 <Menu title="Word: {word.text}"/>
 
-
 <Form>
   <FormGroup>
     <Label>Pronunciation:</Label> <Input bind:value={editWord.pronunciation} />
@@ -21,6 +20,12 @@
         <option>{example}</option>
       {/each}
     </Input>
+    <Label>Categories:</Label>
+      <Input bind:value={categoryInput} type="select" multiple>
+      {#each allCategories as category}
+        <option>{category.name}</option>
+      {/each}
+    </Input>
   </FormGroup>
 </Form>
 <Button on:click={saveWord}> Save </Button>
@@ -31,23 +36,71 @@
 		Label, Input, Button,
     Form, FormGroup, 
   } from 'sveltestrap';
+  import { onMount } from 'svelte';
   import { goto } from '@sapper/app';
   import Menu from '../../components/Menu.svelte';
   import axios from 'axios';
-  import { serverUrl } from '../../config.js';
+  import { serverUrl, collectionId } from '../../config.js';
 
   export let word;
-  let editWord = {
-    id: word.id, 
-    text: word.text,
-    pronunciation: word.pronunciation,
-    state: "CORRECT"
-  };
+  let allCategories = [];
+  let prevCategories = [];
+  let categoryInput = [];
+  let editWord = {};
+  if (word.state === "CORRECT") {
+    editWord = word;
+  } else {
+    editWord = {
+      id: word.id, 
+      text: word.text,
+      pronunciation: word.pronunciation,
+      state: "CORRECT"
+    };
+  }
 
   function saveWord() {
-    axios.put(`${serverUrl}/word/`, editWord)
+    // save word
+    axios.put(`${serverUrl}/word/`, editWord);
+
+    // save selected categories
+    allCategories.filter((category) => {
+      return categoryInput.includes(category.name);
+    }).forEach((category) => { 
+      axios.post(`${serverUrl}/category/${category.id}/word/${editWord.id}/`)
+    });
+
+    // remove unselected categories
+    prevCategories.filter((category) => {
+      return category.collectionId === collectionId && !categoryInput.includes(category.name)
+    }).forEach((category) => { 
+      axios.delete(`${serverUrl}/category/${category.id}/word/${editWord.id}/`)
+    });
+
     goto('/words');
   }
+
+  function getAllCategories() {
+    axios.get(`${serverUrl}/collection/${collectionId}/categories`)
+      .then(function (response) {
+        allCategories = [...response.data.payload];
+      })
+  }
+
+  function getWordCategories() {
+    axios.get(`${serverUrl}/word/${word.id}/categories`)
+      .then(function (response) {
+        prevCategories = [...response.data.payload];
+        categoryInput = prevCategories
+          .map((category) => {
+            return category.name;
+          });
+      })
+  }
+
+  onMount(() => {
+    getAllCategories()
+    getWordCategories()
+  });
 </script>
 
 
