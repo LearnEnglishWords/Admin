@@ -28,7 +28,10 @@
     </Input>
   </FormGroup>
 </Form>
-<Button on:click={saveWord}> Save </Button>
+<Button on:click={saveWord} color="danger"> Save </Button>
+
+<CategoryForm on:save={() => {setTimeout(() => { getAllCategories() }, 500)}} />
+
 
 <script>
 	import { 
@@ -39,6 +42,7 @@
   import { onMount } from 'svelte';
   import { goto } from '@sapper/app';
   import Menu from '../../components/Menu.svelte';
+  import CategoryForm from '../../components/CategoryForm.svelte';
   import axios from 'axios';
   import { serverUrl, collectionId } from '../../config.js';
 

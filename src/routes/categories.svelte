@@ -26,68 +26,36 @@
 <br>
 <br>
 
-<center>
-  <Button color="primary" on:click={() => (open = !open)} class="mb-3">
-		Add category
-  </Button>
-</center>
-
-<Fade isOpen={open}>
-  <Card body>
-    <Input bind:value={categoryInput} on:keydown={handleEnter} />
-    <Button on:click={saveCategory}> Save </Button>
-  </Card>
-</Fade>
+<CategoryForm on:save={() => {setTimeout(() => { getCategories() }, 500)}} />
 
 
 <script>
 	import { 
-    Row, Col,
-		Input, Button,
-		ListGroup, ListGroupItem,
-    Fade, Card
+    Row, Col, Button,
+    ListGroup, ListGroupItem
   } from 'sveltestrap';
   import { onMount } from 'svelte';
   import axios from 'axios';
   import Menu from '../components/Menu.svelte';
+  import CategoryForm from '../components/CategoryForm.svelte';
   import { serverUrl, collectionId } from '../config.js';
 
-	let categoryList = [];
-  let open = false;
-  let categoryInput = "";
+  let categoryList = [];
 
-  function updateCategories() {
+  function getCategories() {
     axios.get(`${serverUrl}/category/list`)
       .then(function (response) {
         categoryList = [...response.data.payload];
       })
   }
 
-  function saveCategory() {
-    axios.post(`${serverUrl}/category/`, {
-      name: categoryInput,
-      collectionId: collectionId
-    })
-    categoryInput = "";
-    setTimeout(function(){ 
-      updateCategories()
-    }, 500);
-  }
-
   function deleteCategory(id) {
     axios.delete(`${serverUrl}/category/${id}/`)
     setTimeout(function(){ 
-      updateCategories()
+      getCategories()
     }, 500);
   }
-  
-	function handleEnter(event) {
-    if (event.key === "Enter") {
-      document.activeElement.blur()
-      saveCategory();
-    }
-	}
 
-  onMount(() => updateCategories());
+  onMount(() => getCategories());
 
 </script>
