@@ -5,9 +5,21 @@
 
 <Menu title="Imported words:"/>
 
+Filter:
+<Dropdown {isOpen} toggle={() => (isOpen = !isOpen)}>
+  <DropdownToggle caret>{filter}</DropdownToggle>
+  <DropdownMenu>
+    {#each filters as filterValue}
+      <DropdownItem on:click={() => {filter=filterValue; getWords(filterValue)}}>{filterValue}</DropdownItem>
+    {/each}
+  </DropdownMenu>
+</Dropdown>
+
+
+<br>
+<br>
 <ListGroup>
   {#each wordList as word}
-    {#if word.state !== "CORRECT"}
       <ListGroupItem> 
         <Row>
           <Col>
@@ -22,7 +34,6 @@
           {/if}
         </Row>
       </ListGroupItem>
-    {/if}
   {/each}
 </ListGroup>
 
@@ -30,8 +41,9 @@
 <script>
 	import { 
     Row, Col,
-		Input, Button,
-		ListGroup, ListGroupItem,
+    Input, Button,
+    ListGroup, ListGroupItem,
+    Dropdown, DropdownMenu, DropdownToggle, DropdownItem
   } from 'sveltestrap';
   import { onMount } from 'svelte';
   import axios from 'axios';
@@ -39,6 +51,9 @@
   import { serverUrl } from '../../config.js';
 
   let wordList = [];
+  let isOpen = false;
+  let filter = "IMPORT";
+  let filters = ["IMPORT", "PARSE", "CORRECT"];
 
   function parseWord(word) {
     axios.get(`${serverUrl}/word/parse/${word}/`)
@@ -47,12 +62,12 @@
     }, 500);
   }
 
-  function getWords() {
-    axios.get(`${serverUrl}/word/list`)
+  function getWords(state) {
+    axios.get(`${serverUrl}/word/list?state=${state}`)
       .then(function (response) {
         wordList = [...response.data.payload];
       })
   }
 
-  onMount(() => getWords());
+  onMount(() => getWords(filter));
 </script>
