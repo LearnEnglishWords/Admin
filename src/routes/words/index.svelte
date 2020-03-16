@@ -79,7 +79,7 @@ Filter:
   let pagesCount = 50;
   let wordList = [];
   let isOpen = false;
-  let filter = "IMPORT";
+  let filter = "PARSE";
   let filters = ["IMPORT", "PARSE", "CORRECT"];
   let page = 1;
   let availablePages = [];
@@ -87,8 +87,8 @@ Filter:
 
   function getPages() {
     let pages = [];
-    let first = page-6;
-    let last = page+5;
+    let first = page-3;
+    let last = page+3;
 
     if (first < 0) { first = 1 }
     if (last > pagesCount) { last = pagesCount }
