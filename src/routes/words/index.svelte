@@ -10,30 +10,55 @@ Filter:
   <DropdownToggle caret>{filter}</DropdownToggle>
   <DropdownMenu>
     {#each filters as filterValue}
-      <DropdownItem on:click={() => {filter=filterValue; getWords(filterValue)}}>{filterValue}</DropdownItem>
+      <DropdownItem on:click={() => {page=1; filter=filterValue; getWords(filterValue)}}>{filterValue}</DropdownItem>
     {/each}
   </DropdownMenu>
 </Dropdown>
 
+<center>
+  <Pagination ariaLabel="Page navigation example">
+    {#if page > 1}
+      <PaginationItem>
+        <PaginationLink first href="words" on:click={() => {page=1; getWords(filter)}}/>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink previous href="words" on:click={() => {page=page-1; getWords(filter)}}/>
+      </PaginationItem>
+    {/if}
+    {#each availablePages as pageNum}
+      <PaginationItem active={pageNum === page}>
+        <PaginationLink href="words" on:click={() => {page=pageNum; getWords(filter)}}>{pageNum}</PaginationLink>
+      </PaginationItem>
+    {/each}
+    {#if page < pagesCount}
+      <PaginationItem>
+        <PaginationLink next href="words" on:click={() => {page=page+1; getWords(filter)}}/>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink last href="words" on:click={() => {page=pagesCount; getWords(filter)}}/>
+      </PaginationItem>
+    {/if}
+  </Pagination>
+</center>
 
 <br>
 <br>
 <ListGroup>
   {#each wordList as word}
-      <ListGroupItem> 
-        <Row>
-          <Col>
-            <a href="words/{word.text}">
-              {word.text}
-            </a>
+    <ListGroupItem> 
+      <Row>
+        <Col>
+          <a href="words/{word.text}">
+            {word.text}
+          </a>
+        </Col>
+        {#if word.state === "IMPORT"}
+          <Col md={{ offset: 1 }}>
+            <Button color="warning" on:click={() => parseWord(word.text)}> Parse </Button>
           </Col>
-          {#if word.state === "IMPORT"}
-            <Col md={{ offset: 1 }}>
-              <Button color="warning" on:click={() => parseWord(word.text)}> Parse </Button>
-            </Col>
-          {/if}
-        </Row>
-      </ListGroupItem>
+        {/if}
+      </Row>
+    </ListGroupItem>
   {/each}
 </ListGroup>
 
@@ -43,17 +68,34 @@ Filter:
     Row, Col,
     Input, Button,
     ListGroup, ListGroupItem,
-    Dropdown, DropdownMenu, DropdownToggle, DropdownItem
+    Dropdown, DropdownMenu, DropdownToggle, DropdownItem,
+    Pagination, PaginationItem, PaginationLink
   } from 'sveltestrap';
   import { onMount } from 'svelte';
   import axios from 'axios';
   import Menu from '../../components/Menu.svelte';
   import { serverUrl } from '../../config.js';
 
+  let pagesCount = 50;
   let wordList = [];
   let isOpen = false;
   let filter = "IMPORT";
   let filters = ["IMPORT", "PARSE", "CORRECT"];
+  let page = 1;
+  let availablePages = [];
+  let wordsLimit = 10
+
+  function getPages() {
+    let pages = [];
+    let first = page-6;
+    let last = page+5;
+
+    if (first < 0) { first = 1 }
+    if (last > pagesCount) { last = pagesCount }
+    for (let i = first; i <= last; i++) { pages.push(i); }
+
+    return pages
+  }
 
   function parseWord(word) {
     axios.get(`${serverUrl}/word/parse/${word}/`)
@@ -63,9 +105,11 @@ Filter:
   }
 
   function getWords(state) {
-    axios.get(`${serverUrl}/word/list?state=${state}`)
+    axios.get(`${serverUrl}/word/list?page=${page}&state=${state}`)
       .then(function (response) {
-        wordList = [...response.data.payload];
+        wordList = [...response.data.payload.words];
+        pagesCount = Math.ceil(response.data.payload.count / wordsLimit);
+        availablePages = getPages();
       })
   }
 
