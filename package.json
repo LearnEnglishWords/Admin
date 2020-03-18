@@ -17,6 +17,7 @@
     "compression": "^1.7.1",
     "polka": "next",
     "rollup-plugin-postcss": "^2.4.1",
+    "sapper-environment": "^1.0.1",
     "sirv": "^0.4.0",
     "sveltestrap": "^3.3.3"
   },
