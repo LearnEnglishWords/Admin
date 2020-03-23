@@ -98,7 +98,7 @@ Filter:
   }
 
   function parseWord(word) {
-    axios.get(`${serverUrl}/word/parse/${word}/`)
+    axios.get(`${serverUrl}/word/parse?text=${word}`)
     setTimeout(function(){ 
       updateWords()
     }, 500);

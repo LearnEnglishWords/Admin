@@ -7,7 +7,9 @@
 
 <Form>
   <FormGroup>
+    <!--
     <Label>Pronunciation:</Label> <Input bind:value={editWord.pronunciation} />
+    -->
     <Label>Sense:</Label> 
     <Input bind:value={editWord.sense} type="select" multiple>
       {#each word.sense as sense}
@@ -105,7 +107,7 @@
   }
 
   function parseWord(word) {
-    axios.get(`${serverUrl}/word/parse/${word}/`)
+    axios.get(`${serverUrl}/word/parse?text=${word}&filter=false`)
     setTimeout(function(){ 
       updateWords()
     }, 500);
@@ -121,7 +123,7 @@
 <script context="module">
 
 	export async function preload({ params, query }) {
-		const res = await this.fetch(`${serverUrl}/word/find/${params.word}`);
+		const res = await this.fetch(`${serverUrl}/word/find?text=${params.word}`);
 		const word = (await res.json()).payload;
 
 		return { word };
