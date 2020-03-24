@@ -59,10 +59,15 @@
   if (word.state === "CORRECT") {
     editWord = word;
   } else {
+    let examples = [];
+    if (word.state === "AUTO_PARSE") {
+      examples = word.examples;
+    }
     editWord = {
       id: word.id, 
       text: word.text,
       pronunciation: word.pronunciation,
+      examples: examples,
       state: "CORRECT"
     };
   }

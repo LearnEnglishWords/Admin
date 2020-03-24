@@ -79,8 +79,8 @@ Filter:
   let pagesCount = 50;
   let wordList = [];
   let isOpen = false;
-  let filter = "PARSE";
-  let filters = ["IMPORT", "PARSE", "CORRECT"];
+  let filter = "AUTO_PARSE";
+  let filters = ["IMPORT", "PARSE", "AUTO_PARSE", "CORRECT"];
   let page = 1;
   let availablePages = [];
   let wordsLimit = 10
