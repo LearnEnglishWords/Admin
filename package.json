@@ -13,13 +13,11 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "bulma": "^0.8.0",
     "compression": "^1.7.1",
     "polka": "next",
     "rollup-plugin-postcss": "^2.4.1",
     "sapper-environment": "^1.0.1",
-    "sirv": "^0.4.0",
-    "sveltestrap": "^3.3.3"
+    "sirv": "^0.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -39,6 +37,7 @@
     "rollup-plugin-terser": "^4.0.4",
     "sapper": "^0.27.0",
     "svelte": "^3.19.2",
+    "sveltestrap": "^3.3.3",
     "svelte-preprocess": "^3.4.0"
   }
 }
