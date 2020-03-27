@@ -65,6 +65,7 @@
     }
     editWord = {
       id: word.id, 
+      collectionId: collectionId, 
       text: word.text,
       pronunciation: word.pronunciation,
       examples: examples,
