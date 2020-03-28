@@ -40,7 +40,7 @@
 
   export async function preload({ params, query }) {
     const res = await this.fetch(`${serverUrl}/category/${params.categoryId}/words`);
-    const wordList = (await res.json()).payload;
+    const wordList = (await res.json()).payload.words;
 
     return { wordList };
   }
