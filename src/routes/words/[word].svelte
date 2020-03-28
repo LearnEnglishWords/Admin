@@ -22,12 +22,14 @@
         <option>{example}</option>
       {/each}
     </Input>
+    <!--
     <Label>Categories:</Label>
       <Input bind:value={categoryInput} type="select" multiple>
       {#each allCategories as category}
         <option>{category.name}</option>
       {/each}
     </Input>
+    -->
   </FormGroup>
 </Form>
 
@@ -52,7 +54,7 @@
   import { serverUrl, collectionId } from '../../config.js';
 
   export let word;
-  let allCategories = [];
+  //let allCategories = [];
   let prevCategories = [];
   let categoryInput = [];
   let editWord = {};
@@ -77,6 +79,7 @@
     // save word
     axios.put(`${serverUrl}/word/`, editWord);
 
+    /*
     // save selected categories
     allCategories.filter((category) => {
       return categoryInput.includes(category.name);
@@ -90,27 +93,30 @@
     }).forEach((category) => { 
       axios.delete(`${serverUrl}/category/${category.id}/word/${editWord.id}/`)
     });
+    */
 
     window.history.back();
   }
 
+  /*
   function getAllCategories() {
     axios.get(`${serverUrl}/collection/${collectionId}/categories`)
       .then(function (response) {
-        allCategories = [...response.data.payload];
+        allCategories = [...response.data.payload.words];
       })
   }
 
   function getWordCategories() {
     axios.get(`${serverUrl}/word/${word.id}/categories`)
       .then(function (response) {
-        prevCategories = [...response.data.payload];
+        prevCategories = [...response.data.payload.words];
         categoryInput = prevCategories
           .map((category) => {
             return category.name;
           });
       })
   }
+  */
 
   function parseWord(word) {
     axios.get(`${serverUrl}/word/parse?text=${word}&filter=false`)
@@ -120,8 +126,8 @@
   }
 
   onMount(() => {
-    getAllCategories()
-    getWordCategories()
+    //getAllCategories();
+    //getWordCategories();
   });
 </script>
 
