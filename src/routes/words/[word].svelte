@@ -51,7 +51,7 @@
   import Menu from '../../components/Menu.svelte';
   import CategoryForm from '../../components/CategoryForm.svelte';
   import axios from 'axios';
-  import { serverUrl, collectionId } from '../../config.js';
+  import { serverUrl } from '../../config.js';
 
   export let word;
   //let allCategories = [];
@@ -67,7 +67,7 @@
     }
     editWord = {
       id: word.id, 
-      collectionId: collectionId, 
+      collectionId: word.collectionId, 
       text: word.text,
       pronunciation: word.pronunciation,
       examples: examples,
