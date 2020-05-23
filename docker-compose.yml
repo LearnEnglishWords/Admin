@@ -1,7 +1,7 @@
 version: '3'
 services:
   lew-admin:
-    image: applemann/lew-admin:1.1.2
+    image: applemann/lew-admin:1.1.3
     build: .
     ports:
     - "127.0.0.1:3000:3000"
