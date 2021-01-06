@@ -12,7 +12,7 @@
     "test": "run-p --race dev cy:run"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "compression": "^1.7.1",
     "polka": "next",
     "rollup-plugin-postcss": "^2.4.1",
